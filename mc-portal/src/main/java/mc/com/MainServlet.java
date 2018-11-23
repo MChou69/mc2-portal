@@ -29,6 +29,7 @@ import mc.com.tools.Tools;
 @WebServlet({  "/main" })
 @MultipartConfig
 public class MainServlet extends HttpServlet {
+	
 	private static final long serialVersionUID = 1L;
 	private static final String SHARED_FOLDER = "views/shared/";
 	private static final String VIEW_FOLDER = "views/";
