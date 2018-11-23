@@ -1,0 +1,80 @@
+@charset "utf-8";
+
+html, body {
+  height: 100%;
+}
+body{
+    font: 16px/18px "Gotham Rounded A", "Gotham Rounded B", "Gotham Rounded",Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    
+    /*background: #edeff0;
+    color: #576366;
+    -webkit-font-smoothing: antialiased;
+    transition: padding-top 600ms 0s ease;*/
+}
+.wrap {
+  min-height: 80%;
+}
+.container {
+  overflow:auto;
+
+}
+.footer {
+  position: relative;
+  margin: 0px auto;
+  clear:both;
+  max-width:400px;
+}
+
+a{
+	text-decoration: none;
+}
+img.logo{
+	height:50px;
+}
+.btn{
+	padding: .2rem .7rem;
+}
+
+.pagination>li>a, .pagination>li>span { border-radius: 50% !important;margin: 0 5px;}
+.pagination>.active>a, .pagination>.active>span, .pagination>.active>a:hover, .pagination>.active>span:hover, .pagination>.active>a:focus, .pagination>.active>span:focus {
+    z-index: 2;
+    color: #fff;
+    cursor: default;
+    background-color: #428bca;
+    border-color: #428bca;
+}
+.pagination>li>a, .pagination>li>span {
+    border-radius: 50% !important;
+    margin: 0 5px;
+}
+.pagination>li>a, .pagination>li>span {
+    position: relative;
+    float: left;
+    padding: 6px 12px;
+    margin-left: -1px;
+    line-height: 1.42857143;
+    color: #428bca;
+    text-decoration: none;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+
+.infos {
+    border-radius: 6px;
+    position: static;
+    display: block;
+    max-width: 600px;
+    padding: 10px;
+    margin: 0.5rem;
+    overflow: hidden;
+    font-size: 14px;
+    line-height: 1.2;
+    text-align: left;
+    background-color: rgba(0,0,0,.05);
+}
+
+
+
+/*
+
+*/
