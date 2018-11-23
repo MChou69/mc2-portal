@@ -80,7 +80,23 @@ img.logo{
      padding-top: 1rem!important; 
 }
 
+.card-header {
+    padding: .4rem 1rem;
+    margin-bottom: 0;
+    background-color: #343a40;
+    color: white;
+    border-bottom: 1px solid rgba(0,0,0,.125);
+}
+.breadcrumb {
+   
+    padding: .5rem 1rem;
+	background-color: #343a40;
+	color: white;
+}
 
+.h5, h5 {
+    font-size: 1rem;
+}
 /*
 
 */

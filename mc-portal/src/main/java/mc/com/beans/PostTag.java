@@ -18,15 +18,15 @@ public class PostTag implements java.io.Serializable {
 
 	private int id;
 	private Post posts;
-	private Tag tags;
+	private Tag tag;
 
 	public PostTag() {
 	}
 
-	public PostTag(int id, Post posts, Tag tags) {
+	public PostTag(int id, Post posts, Tag tag) {
 		this.id = id;
 		this.posts = posts;
-		this.tags = tags;
+		this.tag = tag;
 	}
 
 	@Id
@@ -41,7 +41,7 @@ public class PostTag implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "Post_Id", nullable = false)
+	@JoinColumn(name = "PostId", nullable = false)
 	public Post getPosts() {
 		return this.posts;
 	}
@@ -51,13 +51,13 @@ public class PostTag implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "Tag_Id", nullable = false)
-	public Tag getTags() {
-		return this.tags;
+	@JoinColumn(name = "TagId", nullable = false)
+	public Tag getTag() {
+		return this.tag;
 	}
 
-	public void setTags(Tag tags) {
-		this.tags = tags;
+	public void setTag(Tag tag) {
+		this.tag = tag;
 	}
 
 }

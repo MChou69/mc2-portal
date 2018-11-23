@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+  
 <!-- Page Heading/Breadcrumbs -->
   <h1 class="mt-4 mb-3">Services
     <small>Subheading</small>
@@ -13,7 +14,7 @@
   </ol> -->
 
   <!-- Image Header -->
-  <img class="img-fluid rounded mb-4" src="http://placehold.it/1200x300" alt="">
+  <img class="img-fluid rounded mb-4" src="<c:url value='/static/carousel-img1.jpg' />" alt="">
 
   <!-- Marketing Icons Section -->
   <div class="row">

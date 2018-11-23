@@ -1,15 +1,19 @@
-<h1 class="mt-4 mb-3">404
-   <small>Page Not Found</small>
- </h1>
 
- <ol class="breadcrumb">
+<div>
+	<h5 class="mt-4 mb-3">404
+	  <small>Page Not Found</small>
+	</h5>
+</div>
+
+
+<%--  <ol class="breadcrumb">
    <li class="breadcrumb-item">
      <a href="<%= request.getContextPath() %>/">Home</a>
    </li>
    <li class="breadcrumb-item active">404</li>
  </ol>
-
- <div class="jumbotron">
+ --%>
+ <!-- <div class="jumbotron">
    <h1 class="display-1">404</h1>
    <p>The page you're looking for could not be found. Here are some helpful links to get you back on track:</p>
    <ul>
@@ -76,6 +80,6 @@
          </li>
        </ul>
      </li>
-   </ul>
- </div>
+   </ul> 
+ </div>-->
  <!-- /.jumbotron -->

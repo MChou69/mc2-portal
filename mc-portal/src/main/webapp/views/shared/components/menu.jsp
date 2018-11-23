@@ -64,6 +64,9 @@
            </a>
            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownBlog">
              <a class="dropdown-item" href="<%= request.getContextPath() %>/?admin&action=restore">Posts Restore (Files)</a>
+             <div class="dropdown-divider"></div>
+             <a class="dropdown-item" href="<%= request.getContextPath() %>/?admin&page=categories">Categories (Admin)</a>
+             <a class="dropdown-item" href="<%= request.getContextPath() %>/?admin&page=tags">Tags (Admin)</a>
            </div>
          </li>
          <li class="nav-item">

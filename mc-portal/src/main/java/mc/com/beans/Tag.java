@@ -34,7 +34,7 @@ public class Tag implements java.io.Serializable {
 		this.postTags = postTags;
 	}
 
-	public Tag(int i, String name) {
+	public Tag(int id, String name) {
 		this.id = id;
 		this.name = name;
 	}
@@ -50,7 +50,7 @@ public class Tag implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@Column(name = "name", length = 45)
+	@Column(name = "Title", length = 45)
 	public String getName() {
 		return this.name;
 	}
@@ -59,7 +59,7 @@ public class Tag implements java.io.Serializable {
 		this.name = name;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tags")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tag")
 	public Set<PostTag> getPostTags() {
 		return this.postTags;
 	}

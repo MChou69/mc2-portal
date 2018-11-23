@@ -29,7 +29,7 @@ import mc.com.tools.Tools;
 @WebServlet({  "/main" })
 @MultipartConfig
 public class MainServlet extends HttpServlet {
-	
+
 	private static final long serialVersionUID = 1L;
 	private static final String SHARED_FOLDER = "views/shared/";
 	private static final String VIEW_FOLDER = "views/";
@@ -37,21 +37,22 @@ public class MainServlet extends HttpServlet {
 
 	private static Logger logger=Logger.getLogger(MainServlet.class);
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {		
-		if(request.getParameter("admin")!=null) {
-			admin();
-		}
+		boolean isAdminMode=request.getParameter("admin")!=null;
+		if(isAdminMode)
+			admin(request.getParameter("page"));
 
 		String page = getPageFromRoute(request);
-
-		if(!ViewExists(page)){		
+		if(!ViewExists(page) && !isAdminMode){		
 			request.setAttribute("error", "404");
 			request.setAttribute("message", "Page Not Found!");			
 		}
-
-		display(page,request,response);
-
+		display(page,request,response, isAdminMode);
 	}	
-	private void admin() {
+	private void admin(String page) {
+
+		if(page!=null) 
+			logger.info("Admin - Page :"+page);
+
 		try {
 			Tools.restoreFiles(getServletContext().getRealPath(UPLOAD_FOLDER));
 		} catch (Exception e) {
@@ -197,34 +198,37 @@ public class MainServlet extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().write(json.toString());		
 	}
-	private void display(String viewName, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
-
+	private void display(String viewName, HttpServletRequest request, HttpServletResponse response, boolean isAdminMode) throws ServletException, IOException {	
 		request.setAttribute("title", "title..");
-
-		viewName = viewName.replace("views/", "");
-		request.setAttribute("page", viewName);	
-
-		logger.info("viewName : "+ viewName);
-
-		blogCases(viewName, request);
-
-		String[] arr=viewName.split("/");
 		String pageName="";
-		if(arr.length>1) {
-			pageName=viewName.split("/")[1].replace(".jsp","");
-			pageName = pageName.substring(0, 1).toUpperCase()+""+pageName.substring(1).toLowerCase();	
+		
+		if(isAdminMode) {
+			pageName="Admin!";
+			viewName="admin/list.jsp";
+			
 			request.setAttribute("pageName", pageName);
+			request.setAttribute("page", viewName);			
 		}
-
+		else {
+			viewName = viewName.replace("views/", "");
+			request.setAttribute("page", viewName);	
+			
+			blogCases(viewName, request);
+			String[] arr=viewName.split("/");			
+			if(arr.length>1) {
+				pageName=viewName.split("/")[1].replace(".jsp","");
+				pageName = pageName.substring(0, 1).toUpperCase()+""+pageName.substring(1).toLowerCase();	
+				request.setAttribute("pageName", pageName);
+			}
+			if("About".equals(pageName)) {
+				String connection_infos=HibernateUtil.getInfo();
+				request.setAttribute("info", connection_infos);
+			}
+		}
 		logger.info("viewName / pageName : "+ viewName +" / "+ pageName);
-		if("About".equals(pageName)) {
-			String connection_infos=HibernateUtil.getInfo();
-			//logger.info("Servlet (Main) ==> Connection Infos : "+connection_infos);
-			request.setAttribute("info", connection_infos);
-		}
-
-		String view_to_display=SHARED_FOLDER+"layout.jsp";	
-		request.getRequestDispatcher(view_to_display).forward(request, response);		
+		
+		//String view_to_display=SHARED_FOLDER+"layout.jsp";	
+		request.getRequestDispatcher(SHARED_FOLDER+"layout.jsp").forward(request, response);		
 	}
 
 	private void blogCases(String viewName, HttpServletRequest request) {
