@@ -13,19 +13,23 @@
 
     <title>${title}</title>
 	
-
 	<link rel="stylesheet" type="text/css"	href="<c:url value='/static/bootstrap/bootstrap.min.css' />" />
 	<script src="https://use.fontawesome.com/70a5c12bcd.js"></script>
 
     <link rel="stylesheet" type="text/css"	href="<c:url value='/static/template-style.css' />" />
 	<link rel="stylesheet" type="text/css"	href="<c:url value='/static/style.css' />" />	 
 	
+	
+	<link rel="stylesheet" href="<c:url value='/static/fileinput.css' />" />
+	
   </head>
-  <body> 	
+  <body class="modal-open"> 	
 	<c:import url="components/menu.jsp"></c:import>
     <header>
 		<c:if test="${page=='main.jsp'}">
 			<c:import url="components/slider.jsp"></c:import>
+			
+			
 		</c:if>
     </header>
 
@@ -83,7 +87,9 @@
     </footer>
 
     <!-- Bootstrap core JavaScript -->	
-	<script src="<c:url value='/static/jquery/jquery.min.js' />"></script>
+	<c:if test="${page!='blog/uploads.jsp' && page!='blog/uploads.jsp'}">
+		<script src="<c:url value='/static/jquery/jquery.min.js' />"></script> 
+	</c:if>
 	
 	<script src="<c:url value='/static/bootstrap/js/bootstrap.bundle.min.js' />"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -119,6 +125,9 @@
 	<%-- <script src="<c:url value='/static/cke/init.js' />"></script> --%>
 
 	<script src="<c:url value='/static/bootstrap-tagsinput.min.js' />"></script>
+	
+	<%-- <script src="<c:url value='/static/jquery/jquery-3.3.1.min.js' />"></script>
+	<script src="<c:url value='/static/bootstrap/js/bootstrap.bundle.min.js' />"></script> --%>
 
   </body>
 </html>

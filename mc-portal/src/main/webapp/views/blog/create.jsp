@@ -6,12 +6,6 @@
 <link rel="stylesheet" href="<c:url value='/static/alertifyjs/css/alertify.min.css' />" />
 <link rel="stylesheet" href="<c:url value='/static/alertifyjs/css/themes/default.min.css' />" />
 
-<!-- include the script -->
-<script src="<c:url value='/static/alertifyjs/alertify.min.js' />"></script>
-
-<script>	
-
-</script>
 <div class="card" style="margin-bottom: 20px;">
 	<div class="render_content" style="display: block; padding: 10px;">
 		<form  onsubmit="return false;" method="post" action="./main">
@@ -51,20 +45,50 @@
 							<label class="col-md-2 control-label">Tags</label>
 							<div class="col-xs-8 col-md-6">
 								<input type="text" id="tags" name="tags" class="form-control" value="Java" data-role="tagsinput" />
+								
+								<!-- <input type="file" multiple="multiple" name="file"	id="project_file_open" style="display: none;">
+								<input type="file" webkitdirectory=""  name="files" id="project_folder_open" style="display: none;" >
+								
+								<button type="button" id="btn-file-project" class="btn btn-sm btn-outline-primary"><i class="fa fa-file-code-o" aria-hidden="true"></i></button>
+								<button type="button" id="btn-folder-project" class="btn btn-sm btn-outline-primary"><i class="fa fa-folder-open" aria-hidden="true"></i></button>
+								 -->
+								
+								<%-- <c:import url="../shared/components/upload-comp.jsp"></c:import> --%>
+								
 							</div>
 						</div>
 					</div>
 					<div class="col-md-2" style="margin: 0px !important;">
-						<button type="button" class="btn btn-sm btn-outline-primary"
+						<!-- <label for="input-folder-3">Select files/folders</label>
+						<div class="file-loading">
+						    <input id="input-folder-3" name="input-folder-3[]" type="file" multiple>
+						</div>
+						<script>
+						$(document).on('ready', function() {
+						    $("#input-folder-3").fileinput({
+						        uploadUrl: "/file-upload-batch/2",
+						        hideThumbnailContent: true // hide image, pdf, text or other content in the thumbnail preview
+						    });
+						});
+						</script> -->
+					
+						<%-- <button type="button" class="btn btn-sm btn-outline-primary"
 							id="btn_image_open">
 							<img src="<c:url value='/static/logo.png' />" id="img" class="img-avatar img-circle" style="width: 40px;" />
-						</button>
-						<input type="file" accept="image/*" name="file"	id="file_image_open" style="display: none;">
+						</button> --%>
+						<!-- <input type="file" accept="image/*" name="file"	id="file_image_open" style="display: none;"> -->
 					</div>
 				</div>
 			</div>
 			
 			<span class="clearfix"></span>
+			
+			<div class="form-group">
+				<div class="col-md-12" style="margin-top: 20px !important;">
+					<%-- <c:import url="../shared/uploads.jsp"></c:import> --%>
+				</div>
+			</div>
+			
 			<div class="form-group">
 				<div class="col-md-12" style="margin-top: 20px !important;">
 					<!-- textarea name="editor" id="editor" > </textarea-->
@@ -88,7 +112,12 @@
 </div>
 
 
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<%-- <script src="<c:url value='/static/jquery/jquery-3.3.1.min.js' />"></script>
+<script src="<c:url value='/static/bootstrap/js/bootstrap.bundle.min.js' />"></script>
+
+<script src="<c:url value='/static/fileinput.js' />"></script> --%>
+
+<script src="<c:url value='/static/alertifyjs/alertify.min.js' />"></script>
 <script src="https://cdn.ckeditor.com/4.10.1/full-all/ckeditor.js"></script>
 <script>
 	editor = CKEDITOR.replace('editor1'); 
@@ -109,8 +138,93 @@
 	    icon: 'Save'
 	});
 </script>
+
+
+<!-- <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script> -->
+
+<!-- <script src="js/plugins/sortable.js" type="text/javascript"></script> -->
+<%-- <script src="<c:url value='/static/fileinput.js' />" type="text/javascript"></script> --%>
+
+<!-- <script src="js/locales/fr.js" type="text/javascript"></script>
+<script src="js/locales/es.js" type="text/javascript"></script> -->
+<!-- <script src="themes/fas/theme.js" type="text/javascript"></script>
+<script src="themes/explorer-fas/theme.js" type="text/javascript"></script> -->
+
 <script>
 	$(function() {
+
+		/*  $("#input-folder-3").fileinput({
+	            uploadUrl: "/file-upload-batch/2",
+	            hideThumbnailContent: true // hide image, pdf, text or other content in the thumbnail preview
+	        });
+
+
+	        $("#input-folder").fileinput({
+	          browseLabel: 'Select Folder...',
+	          hideThumbnailContent: true,
+	      }); */
+		
+/* 
+		$('#btn-file-project').click(function(e) {
+			$('#project_file_open').trigger("click");
+		});
+
+		$('#btn-folder-project').click(function(e) {
+			$('#project_folder_open').trigger("click");
+		});
+		
+		$("#project_folder_open").fileinput({
+	        browseLabel: 'Select Folder...',
+	        previewFileIcon: '<i class="fas fa-file"></i>',
+	        allowedPreviewTypes: null, // set to empty, null or false to disable preview for all types
+	        previewFileIconSettings: {
+	            'doc': '<i class="fas fa-file-word text-primary"></i>',
+	            'xls': '<i class="fas fa-file-excel text-success"></i>',
+	            'ppt': '<i class="fas fa-file-powerpoint text-danger"></i>',
+	            'jpg': '<i class="fas fa-file-image text-warning"></i>',
+	            'pdf': '<i class="fas fa-file-pdf text-danger"></i>',
+	            'zip': '<i class="fas fa-file-archive text-muted"></i>',
+	            'htm': '<i class="fas fa-file-code text-info"></i>',
+	            'txt': '<i class="fas fa-file-alt text-info"></i>',
+	            'mov': '<i class="fas fa-file-video text-warning"></i>',
+	            'mp3': '<i class="fas fa-file-audio text-warning"></i>',
+	        },
+	        previewFileExtSettings: {
+	            'doc': function(ext) {
+	                return ext.match(/(doc|docx)$/i);
+	            },
+	            'xls': function(ext) {
+	                return ext.match(/(xls|xlsx)$/i);
+	            },
+	            'ppt': function(ext) {
+	                return ext.match(/(ppt|pptx)$/i);
+	            },
+	            'jpg': function(ext) {
+	                return ext.match(/(jp?g|png|gif|bmp)$/i);
+	            },
+	            'zip': function(ext) {
+	                return ext.match(/(zip|rar|tar|gzip|gz|7z)$/i);
+	            },
+	            'htm': function(ext) {
+	                return ext.match(/(php|js|css|htm|html)$/i);
+	            },
+	            'txt': function(ext) {
+	                return ext.match(/(txt|ini|md)$/i);
+	            },
+	            'mov': function(ext) {
+	                return ext.match(/(avi|mpg|mkv|mov|mp4|3gp|webm|wmv)$/i);
+	            },
+	            'mp3': function(ext) {
+	                return ext.match(/(mp3|wav)$/i);
+	            },
+	        }
+	    });
+
+		$('#project_folder_open').change(function(e){
+	    	alert(this.files.length);
+	    });
+	    
 		$('#btn_submit_post').click(function(e) {
 			
 			$.ajax({
@@ -134,6 +248,6 @@
 				  }
 			});			
 		});
-
+ 		*/
 	});
 </script>

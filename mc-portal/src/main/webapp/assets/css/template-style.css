@@ -35,3 +35,14 @@ body {
 .breadcrumb{
 	margin-top:10px;
 }
+
+.breadcrumb-item+.breadcrumb-item {
+    padding-left: .2rem;
+    color: white !important;
+}
+
+.form-control {
+    line-height: 1.2;
+    padding: .3rem .5rem;
+    font-size: 0.9rem;
+}

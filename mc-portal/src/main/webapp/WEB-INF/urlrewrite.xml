@@ -28,6 +28,10 @@
 		<from>static/(.*).jpg</from>
 		<to>assets/images/$1.jpg</to>
 	</rule>
+	<rule>
+		<from>static/fonts/(.*).woff2</from>
+		<to>assets/css/fonts/$1.woff2</to>
+	</rule>	
 		
 	<rule>
 		<from>/$</from>
