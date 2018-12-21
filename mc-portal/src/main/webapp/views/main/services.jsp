@@ -14,7 +14,7 @@
   </ol> -->
 
   <!-- Image Header -->
-  <img class="img-fluid rounded mb-4" src="<c:url value='/static/carousel-img1.jpg' />" alt="">
+  <img class="img-fluid rounded mb-4" src="<c:url value='/static/carousel-img1.jpg' />" alt="" style="max-height:200px;">
 
   <!-- Marketing Icons Section -->
   <div class="row">

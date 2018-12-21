@@ -33,31 +33,60 @@ public class MainServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String SHARED_FOLDER = "views/shared/";
 	private static final String VIEW_FOLDER = "views/";
-	private static final String UPLOAD_FOLDER = "views/uploads/";
+	public static final String UPLOAD_FOLDER = "views/uploads/";
 
+	private static byte theme = 0;
+	
 	private static Logger logger=Logger.getLogger(MainServlet.class);
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {		
-		boolean isAdminMode=request.getParameter("admin")!=null;
-		if(isAdminMode)
-			admin(request.getParameter("page"));
-
-		String page = getPageFromRoute(request);
-		if(!ViewExists(page) && !isAdminMode){		
-			request.setAttribute("error", "404");
-			request.setAttribute("message", "Page Not Found!");			
+		checkConnect(request);
+		
+		boolean ajax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
+		logger.info("*******************************************************");
+		logger.info("doGet.."+ajax);
+		logger.info("*******************************************************");
+		
+		boolean isAdminMode=adminMode(request,response);	
+		if(!isAdminMode) {
+			String page = getPageFromRoute(request);
+			if(!ViewExists(page)){		
+				request.setAttribute("error", "404");
+				request.setAttribute("message", "Page Not Found!");			
+			}
+						
+			display(page,request,response, isAdminMode);
 		}
-		display(page,request,response, isAdminMode);
+	}
+	private void checkConnect(HttpServletRequest request) {
+		boolean checkConnection=HibernateUtil.checkConnection();
+		request.setAttribute("checkConnection", checkConnection);
 	}	
-	private void admin(String page) {
+	private boolean adminMode(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
+		if(request.getParameter("admin")==null) 
+			return false;
+				
+		
+		//Admin Mode..	
+		if(request.getParameter("action")!=null) {		
+			logger.info("Admin Mode..action : "+request.getParameter("action"));			
+			if(request.getParameter("action").equals("restore"))
+				try {		
+					Tools.restoreFiles(getServletContext().getRealPath(UPLOAD_FOLDER));
 
-		if(page!=null) 
-			logger.info("Admin - Page :"+page);
-
-		try {
-			Tools.restoreFiles(getServletContext().getRealPath(UPLOAD_FOLDER));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}		
+					redirectToRoot(response);
+				} catch (Exception e) {
+					
+				}
+		}else {
+			String page=request.getParameter("page");
+			logger.info("Admin Mode => Page :"+page);
+			
+			display(page, request, response, true);
+		}
+		return true;
+	}
+	private void redirectToRoot(HttpServletResponse response) throws IOException {
+		response.sendRedirect("./");
 	}
 	private String getPageFromRoute(HttpServletRequest request) {
 		String page="";
@@ -73,8 +102,10 @@ public class MainServlet extends HttpServlet {
 		String fullPath = this.getServletContext().getRealPath(page);
 		try {
 			File fview=new File(fullPath);
-			//	log.log(Level.INFO, "File (View) :"+fview.exists()+" "+fview.getAbsolutePath());
-			//	log.log(Level.INFO, page+ " fullPath : "+fullPath);	
+			
+//			logger.info( "File (View) :"+fview.exists()+" "+fview.getAbsolutePath());
+//			logger.info( page+ " fullPath : "+fullPath);	
+			
 			return fview.exists();
 		} catch (Exception e) {			
 			logger.error("Err :"+e.getMessage());
@@ -85,127 +116,37 @@ public class MainServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		boolean ajax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
+		logger.info("*******************************************************");
+		logger.info("doPost.."+ajax);
+		logger.info("*******************************************************");
+		
 		if(ajax) {
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/async");
 			dispatcher.forward(request,response);
 			return;
 		}
 
-		if(request.getParameter("post")!=null) {
-			blogPostCases(request, response);
-		}
-		else {
-			logger.info("Servlet (Main) ==> POST = ???");
-		}
+//		if(request.getParameter("post")!=null) {
+//			blogPostCases(request, response);
+//		}
+//		else {
+		logger.info("Servlet (Main) ==> POST = ???");
+//		}
 	}
 
-	private void blogPostCases(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		if(request.getParameter("id")!=null)
-			postUpdate(request,response);
-		else
-			postCreate(request,response);
-	}
-	private void postUpdate(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		JsonObject json = new JsonObject();
 
-		logger.info("Servlet (Main) ==> POST Update..");
-
-		int id=Integer.parseInt(request.getParameter("id"));
-		int category=Integer.parseInt(request.getParameter("category"));
-		String title=request.getParameter("title");
-		String description=request.getParameter("desc");
-		String tags=request.getParameter("tags");
-		String html=request.getParameter("post");
-
-		logger.info(id+' '+title+" | "+category+" | "+description+" | "+tags);
-
-		//String fileName="post_"+ formater.format(new Date())+".htm";
-		String fullPath;
-		try {
-			Post post = new PostManager().findById(id);
-			if(post!=null) {
-				String fileName = post.getFileName();
-
-				//..en local..(copie)..
-				String path=Tools.uploadPath(); 				
-				fullPath = Tools.updateFile(path+fileName, html);
-
-				//logger.info("==============> Post File - path (local) : "+fullPath);				
-				fullPath = getServletContext().getRealPath(UPLOAD_FOLDER+fileName);
-				fullPath = Tools.updateFile(fullPath, html);
-
-				//update post
-				Category category_item = new CategoryManager().findById(category);
-
-				post.setTitle(title);
-				post.setCategory(category_item);
-				post.setDescription(description);
-				post.setUpdated(new Date());
-
-				new PostManager().update(post,tags.split(";"));
-
-				json.addProperty("message", "Post Updated!");
-			}else {
-				json.addProperty("message", "Post Update - Error : no post!");
-			}
-
-		} catch (Exception e) {
-			logger.info("File Update - Error : "+e);
-			json.addProperty("message", "Post Update - Error : "+e.getMessage());
-		}		
-
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		response.getWriter().write(json.toString());		
-	}
-	private void postCreate(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		logger.info("Servlet (Main) ==> POST Create..");
-
-		String title=request.getParameter("title");
-		int category=Integer.parseInt(request.getParameter("category"));
-
-		String description=request.getParameter("desc");
-		String tags=request.getParameter("tags");
-		String html=request.getParameter("post");
-
-		logger.info(title+" | "+category+" | "+description+" | "+tags);
-		String fullPath;
-		JsonObject json = new JsonObject();
-		try {
-
-			SimpleDateFormat formater = new SimpleDateFormat("ddMMyyyy_HHmmss");
-			String fileName="post_"+ formater.format(new Date())+".htm";
-
-			//..en local..(copie)..
-			String path=Tools.uploadPath(); 				
-			fullPath = Tools.createFile(path+fileName, html);
-			//logger.info("==============> Post File - path (local) : "+fullPath);
-
-			fullPath = getServletContext().getRealPath(UPLOAD_FOLDER+fileName);
-			fullPath = Tools.createFile(fullPath, html);
-
-			//logger.info("==============> Post File - path (remote)  : "+fullPath);
-
-			boolean result = new PostManager().create(category, title, description, fileName, tags.split(";") );
-			json.addProperty("message", "Post Created!");
-
-		} catch (Exception e) {
-			logger.info("File creation - Error : "+e);
-			json.addProperty("message", "Post creation - Error : "+e.getMessage());
-		}		
-
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		response.getWriter().write(json.toString());		
-	}
 	private void display(String viewName, HttpServletRequest request, HttpServletResponse response, boolean isAdminMode) throws ServletException, IOException {	
-		request.setAttribute("title", "title..");
-		String pageName="";
+	
+		request.setAttribute("title", "MC-Portal.");	
+		String page="",pageName="", category="";
 		
 		if(isAdminMode) {
-			pageName="Admin!";
-			viewName="admin/list.jsp";
-			
+			pageName=viewName;
+		
+			viewName="admin/"+viewName+".jsp";
+			if(!ViewExists(VIEW_FOLDER+viewName)){		
+				viewName="admin/index.jsp";
+			}
 			request.setAttribute("pageName", pageName);
 			request.setAttribute("page", viewName);			
 		}
@@ -213,37 +154,62 @@ public class MainServlet extends HttpServlet {
 			viewName = viewName.replace("views/", "");
 			request.setAttribute("page", viewName);	
 			
-			blogCases(viewName, request);
+					
 			String[] arr=viewName.split("/");			
 			if(arr.length>1) {
 				pageName=viewName.split("/")[1].replace(".jsp","");
 				pageName = pageName.substring(0, 1).toUpperCase()+""+pageName.substring(1).toLowerCase();	
 				request.setAttribute("pageName", pageName);
+			}		
+			
+			category=request.getParameter("category");
+			if(category!=null) {		
+				switch (category) {
+					case "blog":
+						blogProcess(pageName.toLowerCase(), request);
+						break;
+					default:
+						break;
+				}
 			}
+			
 			if("About".equals(pageName)) {
 				String connection_infos=HibernateUtil.getInfo();
 				request.setAttribute("info", connection_infos);
 			}
 		}
-		logger.info("viewName / pageName : "+ viewName +" / "+ pageName);
+		logger.info("category / viewName / pageName : "+category+" / " + viewName +" / "+ pageName);
 		
-		//String view_to_display=SHARED_FOLDER+"layout.jsp";	
+		if(viewName.equals("main.jsp")) {
+			theme=(byte)(++theme%2);
+			request.setAttribute("theme", theme);
+		}
 		request.getRequestDispatcher(SHARED_FOLDER+"layout.jsp").forward(request, response);		
 	}
 
-	private void blogCases(String viewName, HttpServletRequest request) {
+	private void blogProcess(String pageName, HttpServletRequest request) {
 
-		if(viewName.equals("blog/list1.jsp")) {
-			List<Post> posts = new PostManager().list();		
-			request.setAttribute("posts", posts);
+		if(pageName.equals("list")) {
+			try {
+				PostManager pm = new PostManager();
+				logger.info("PostManager : "+pm);
+				
+				List<Post> posts = pm.list();	
+				logger.info("PostManager - posts : "+posts);
+				
+				request.setAttribute("posts", posts);
+				
+			} catch (Exception e) {
+				logger.info("blogProcess - Error  : "+e);
+			}
+			
+			
 		}
-		else if(viewName.equals("blog/create.jsp")) {		
+		else if(pageName.equals("create")) {		
 			List<Category> categories = new CategoryManager().findAll();
 			request.setAttribute("categories", categories);		
-			logger.info("categories: "+ Arrays.toString(categories.toArray()));
-
 		}
-		else if(viewName.equals("blog/update.jsp")) {		
+		else if(pageName.equals("update")) {		
 			if(request.getParameter("id")!=null) {
 				int id= Integer.parseInt(request.getParameter("id"));
 				Post post = new PostManager().findById(id);								
@@ -256,7 +222,7 @@ public class MainServlet extends HttpServlet {
 				request.setAttribute("post_url", path+post.getFileName());
 			}	
 		}
-		else if(viewName.equals("blog/post.jsp")) {			
+		else if(pageName.equals("post")) {			
 			if(request.getParameter("id")!=null) {
 				int id= Integer.parseInt(request.getParameter("id"));
 				Post post = new PostManager().findById(id);
@@ -270,4 +236,7 @@ public class MainServlet extends HttpServlet {
 
 		}
 	}
+	
+	
+	
 }

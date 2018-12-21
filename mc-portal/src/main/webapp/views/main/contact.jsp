@@ -1,17 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
- <!-- Page Heading/Breadcrumbs -->
- <h1 class="mt-4 mb-3">Contact
-   <small>Subheading</small>
- </h1>
 
- <ol class="breadcrumb">
-   <li class="breadcrumb-item">
-     <a href="index.html">Home</a>
-   </li>
-   <li class="breadcrumb-item active">Contact</li>
- </ol>
-
- <!-- Content Row -->
  <div class="row">
    <!-- Map Column -->
    <div class="col-lg-8 mb-4">
@@ -64,7 +52,7 @@
        <div class="control-group form-group">
          <div class="controls">
            <label>Email Address:</label>
-           <input type="email" class="form-control" id="email" required data-validation-required-message="Please enter your email address.">
+           <input type="email" class="form-control" id="mail" required data-validation-required-message="Please enter your email address.">
          </div>
        </div>
        <div class="control-group form-group">

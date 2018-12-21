@@ -1,14 +1,4 @@
 <div class="post">
-	<h3>
-		<a href="/news/2017/02/01/tip4-testing/">Post Title..</a>
-	</h3>
-	<div class="news-date news-boxed"> date.. &nbsp; 
-		<span class="tags"> 
-			<i class="fa fa-tags"></i><a href="/news/tags/tips">tags..</a>
-		</span> &nbsp; 
-		<i class="fa fa-pencil"></i> MC.
-	</div>
-	<p></p>
 	<div class="content">
 		<div id="toc" class="toc">
 			<div id="toctitle" class="title">Contents</div>

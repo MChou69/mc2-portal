@@ -1,5 +1,6 @@
 package mc.com.dao;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaQuery;
@@ -30,56 +31,44 @@ public class GenericDao<T> implements IDao<T> {
 	}
 
 	public T add(T item) {
-		System.out.println("Dao (Generic) - "+this.entityClass.getName()+" ==> Add");		
-		//SetIdentityInsertOn("ON");
-		//		Transaction tx = session.getTransaction();
-		//		tx.begin();
-		//		session.save(item);
-		//		tx.commit();
-
-		//SetIdentityInsertOn("OFF");
+		Session session = HibernateUtil.getSession();
+		Transaction tx = session.getTransaction();
+		tx.begin();
+		Serializable id = session.save(item);
+		tx.commit();
+		session.close();
 		
-		Transaction transObj = null;
-		Session sessionObj = null;
-		try {
-			sessionObj = HibernateUtil.getSessionFactory().openSession();
-			transObj = sessionObj.beginTransaction();
-			
-			sessionObj.save(item);
-			
-			transObj.commit();
-		} catch (HibernateException exObj) {
-			if(transObj!=null){
-				transObj.rollback();
-			}
-			exObj.printStackTrace(); 
-		} finally {
-			sessionObj.close(); 
-		}
-		
+		System.out.println("Dao (Generic) - Add "+this.entityClass.getName()+" ==>  Item : "+item);
+		System.out.println("Dao (Generic) - Add "+this.entityClass.getName()+" ==>  ID : "+id);
 		return item;
 	}
 
 	public T update(T item) {
-
-		Transaction transObj = null;
-		Session sessionObj = null;
-		try {
-			sessionObj = HibernateUtil.getSessionFactory().openSession();
-			transObj = sessionObj.beginTransaction();
-			
-			sessionObj.merge(item);
-			
-			transObj.commit();
-		} catch (HibernateException exObj) {
-			if(transObj!=null){
-				transObj.rollback();
-			}
-			exObj.printStackTrace(); 
-		} finally {
-			sessionObj.close(); 
-		}
+		Session session = HibernateUtil.getSession();
+		Transaction tx = session.getTransaction();
+		tx.begin();
+		session.merge(item);
+		tx.commit();
+		session.close();
 		
+//		Transaction transObj = null;
+//		Session sessionObj = null;
+//		try {
+//			sessionObj = HibernateUtil.getSessionFactory().openSession();
+//			transObj = sessionObj.beginTransaction();
+//
+//			sessionObj.merge(item);
+//
+//			transObj.commit();
+//		} catch (HibernateException exObj) {
+//			if(transObj!=null){
+//				transObj.rollback();
+//			}
+//			exObj.printStackTrace(); 
+//		} finally {
+//			sessionObj.close(); 
+//		}
+
 		return item;
 	}
 
@@ -87,25 +76,33 @@ public class GenericDao<T> implements IDao<T> {
 		T item=findById(id);
 		if(item==null)
 			return;
-
-
-		Transaction transObj = null;
-		Session sessionObj = null;
-		try {
-			sessionObj = HibernateUtil.getSessionFactory().openSession();
-			transObj = sessionObj.beginTransaction();
-			
-			session.delete(item);
-			
-			transObj.commit();
-		} catch (HibernateException exObj) {
-			if(transObj!=null){
-				transObj.rollback();
-			}
-			exObj.printStackTrace(); 
-		} finally {
-			sessionObj.close(); 
-		}
+		
+		Session session = HibernateUtil.getSession();
+		Transaction tx = session.getTransaction();
+		tx.begin();
+		session.delete(item);
+		tx.commit();
+		session.close();
+		
+//
+//
+//		Transaction transObj = null;
+//		Session sessionObj = null;
+//		try {
+//			sessionObj = HibernateUtil.getSessionFactory().openSession();
+//			transObj = sessionObj.beginTransaction();
+//
+//			session.delete(item);
+//
+//			transObj.commit();
+//		} catch (HibernateException exObj) {
+//			if(transObj!=null){
+//				transObj.rollback();
+//			}
+//			exObj.printStackTrace(); 
+//		} finally {
+//			sessionObj.close(); 
+//		}
 
 	}
 

@@ -37,14 +37,13 @@
 							<label class="col-md-2 control-label" for="Desc">Desc</label>
 							<div class="col-md-10">
 								<textarea rows="2" class="form-control" id="desc" name="desc"></textarea>
-								<span class="text-danger field-validation-valid"
-									data-valmsg-for="Desc" data-valmsg-replace="true"></span>
+								<span class="text-danger field-validation-valid" data-valmsg-for="Desc" data-valmsg-replace="true"></span>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-md-2 control-label">Tags</label>
 							<div class="col-xs-8 col-md-6">
-								<input type="text" id="tags" name="tags" class="form-control" value="Java" data-role="tagsinput" />
+								<input type="text" id="tags" name="tags" class="form-control" value="Java" data-role="tagsinput" /> 
 								
 								<!-- <input type="file" multiple="multiple" name="file"	id="project_file_open" style="display: none;">
 								<input type="file" webkitdirectory=""  name="files" id="project_folder_open" style="display: none;" >
@@ -90,20 +89,19 @@
 			</div>
 			
 			<div class="form-group">
-				<div class="col-md-12" style="margin-top: 20px !important;">
-					<!-- textarea name="editor" id="editor" > </textarea-->
+				<div class="row" style="margin-top: 20px !important;">
 					<textarea id="editor1" name="editor1" rows="12" cols="80">						
 						<c:import url="template.jsp" />					
 					</textarea>
-					<hr>
-					<div class="form-group pull-right">
-						<div class="col-md-offset-2 col-md-10">
-							<input type="button" name="create-post" id="btn_submit_post" value="Save!" class="btn btn-default" disabled="disabled">
-						</div>
-					</div>
-					<hr>
-					<div id="content" class="well"></div>
 				</div>
+			</div>
+			<hr>
+			<div class="form-group">
+				<input type="button" name="create-post" id="btn_submit_post" value="Save!" class="btn btn-success" disabled="disabled">
+			</div>
+			<hr>
+			<div class="form-group">			
+				<div id="content" class="well"></div>
 			</div>
 			
 		
@@ -112,13 +110,14 @@
 </div>
 
 
-<%-- <script src="<c:url value='/static/jquery/jquery-3.3.1.min.js' />"></script>
-<script src="<c:url value='/static/bootstrap/js/bootstrap.bundle.min.js' />"></script>
 
-<script src="<c:url value='/static/fileinput.js' />"></script> --%>
+<script src="<c:url value='/static/jquery/jquery-3.3.1.min.js' />"></script>
+<script src="<c:url value='/static/bootstrap-tagsinput.min.js' />"></script>
 
 <script src="<c:url value='/static/alertifyjs/alertify.min.js' />"></script>
 <script src="https://cdn.ckeditor.com/4.10.1/full-all/ckeditor.js"></script>
+
+
 <script>
 	editor = CKEDITOR.replace('editor1'); 
 	editor.addCommand("EditorSave", { 
@@ -139,21 +138,34 @@
 	});
 </script>
 
-
-<!-- <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script> -->
-
-<!-- <script src="js/plugins/sortable.js" type="text/javascript"></script> -->
-<%-- <script src="<c:url value='/static/fileinput.js' />" type="text/javascript"></script> --%>
-
-<!-- <script src="js/locales/fr.js" type="text/javascript"></script>
-<script src="js/locales/es.js" type="text/javascript"></script> -->
-<!-- <script src="themes/fas/theme.js" type="text/javascript"></script>
-<script src="themes/explorer-fas/theme.js" type="text/javascript"></script> -->
-
 <script>
 	$(function() {
-
+		$('#btn_submit_post').click(function(e) {	
+			
+			$.ajax({
+				  type: "POST",
+				  url: "./main",
+				  data: {
+					  item: 'post',
+					  action: 'add',				  
+					  category: $('#category').val(),
+					  title: $('#title').val(),
+					  desc: $('#desc').val(),
+					  tags: $('#tags').val(),
+					  post : $('#content').html()			
+				  },
+				  success: function(data){
+						//console.log('create post : '+data.message);
+						alertify.success(data.message);
+						document.location.href="./?category=blog&page=list";
+				  },
+				  error: function(err){
+					  console.log('create post - error : '+err);
+					  alertify.error(err);
+				  }
+			});			
+		});
+ 		
 		/*  $("#input-folder-3").fileinput({
 	            uploadUrl: "/file-upload-batch/2",
 	            hideThumbnailContent: true // hide image, pdf, text or other content in the thumbnail preview
@@ -224,30 +236,7 @@
 		$('#project_folder_open').change(function(e){
 	    	alert(this.files.length);
 	    });
-	    
-		$('#btn_submit_post').click(function(e) {
-			
-			$.ajax({
-				  type: "POST",
-				  url: "./main",
-				  data: {
-					  category: $('#category').val(),
-					  title: $('#title').val(),
-					  desc: $('#desc').val(),
-					  tags: $('#tags').val(),
-					  post : $('#content').html()			
-				  },
-				  success: function(data){
-						console.log('create post : '+data.message);
-						alertify.success(data.message);
-						document.location.href="./?category=blog&page=list1";
-				  },
-				  error: function(err){
-					  console.log('create post - error : '+err);
-					  alertify.error(err);
-				  }
-			});			
-		});
- 		*/
+		*/
+		
 	});
 </script>

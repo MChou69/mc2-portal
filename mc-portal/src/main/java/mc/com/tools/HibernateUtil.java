@@ -1,5 +1,6 @@
 package mc.com.tools;
 
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
@@ -14,7 +15,18 @@ public class HibernateUtil {
 		
 	private static StandardServiceRegistry registry;
 	private static SessionFactory sessionFactory;
-
+	private static Session session;
+	
+	public static Session getSession() {
+		if (session == null) {
+			session=getSessionFactory().openSession();
+		}
+		if(!session.isOpen()) {
+			session= getSessionFactory().openSession();
+		}
+		
+		return session;
+	}
 	public static SessionFactory getSessionFactory() {
 		
 		if (sessionFactory == null) {
@@ -27,7 +39,6 @@ public class HibernateUtil {
 				Metadata metadata = new MetadataSources(registry).getMetadataBuilder().build();
 				sessionFactory = metadata.getSessionFactoryBuilder().build();
 			} catch (Exception e) {
-				e.printStackTrace();
 				if (registry != null) {
 					StandardServiceRegistryBuilder.destroy(registry);
 				}
@@ -40,6 +51,14 @@ public class HibernateUtil {
 			StandardServiceRegistryBuilder.destroy(registry);
 		}
 	}	
+	
+	public static boolean checkConnection() {
+		boolean check= (getSessionFactory()!=null);
+		if(check)
+			check=(getSession()!=null);				
+		return check;
+	}
+	
 	public static String getInfo() {
 		if(getSessionFactory()==null)
 			return "No Connection!";

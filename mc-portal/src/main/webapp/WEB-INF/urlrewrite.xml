@@ -4,14 +4,6 @@
     "http://www.tuckey.org/res/dtds/urlrewrite4.0.dtd">
 <urlrewrite>
 
-	<!-- <rule>
-		<from>vendor/(.*).css</from>
-		<to>assets/vendor/$1.css</to>
-	</rule>
-	<rule>
-		<from>vendor/(.*).js</from>
-		<to>assets/vendor/$1.js</to>
-	</rule> -->
     <rule>
 		<from>static/(.*).css</from>
 		<to>assets/css/$1.css</to>
@@ -32,37 +24,36 @@
 		<from>static/fonts/(.*).woff2</from>
 		<to>assets/css/fonts/$1.woff2</to>
 	</rule>	
+	
+	<rule>
+		<from>static/(.*).gif</from>
+		<to>assets/images/$1.gif</to>
+	</rule>
+	<rule>
+		<from>static/(.*).tpl</from>
+		<to>views/admin/$1.tpl</to>
+	</rule>	
 		
 	<rule>
 		<from>/$</from>
 		<to>/main</to>
 	</rule>
+	
 	<rule>
-	   <name>RULE: ignore js and css and fonts!</name>
-	   <from>/^(.*(\.css|\.js|\.png|\.eot|\.ttf|\.svg|\.woff|\.woff2|\.otf))$</from>
+	   <from>^/([a-z]+)/([a-z]+)$</from>
+	   <to>/main?category=$1&amp;page=$2</to>
+	</rule> 
+		
+	<rule>
+	   <name>RULE: ignore js and css and fonts 1!</name>
+	   <from>/^(.*(\.css|\.js|\.png|\.eot|\.ttf|\.svg|\.woff|\.woff2|\.otf|\.tpl|\.gif))$</from>
 	   <to>/main</to>
 	</rule> 
-	<rule>
-		<from>/main/(.*)</from>
-		<to>/main?page=$1</to>
-	</rule>
-	
-	
-	
+
 	<!-- rule>
-		<from>/(.*).html</from>
-		<to>/main?page=$1</to>
-	</rule>
-	<rule>
-		<from>/(.*)/</from>
-		<to>/main?page=$1</to>
-	</rule-->
-	<!-- rule>
-		<from>/(.*).html</from>
-		<to>main.jsp?id=$1</to>
-	</rule>
-	<rule>
-		<from>/main/(.*)/</from>
-		<to>/main?name=$1</to>
-	</rule-->
+        <from>/main/(.*)$</from>
+        <to>/category=main&amp;page=$1</to>      
+    </rule-->
+	
+	
 </urlrewrite>

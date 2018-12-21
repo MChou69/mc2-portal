@@ -16,7 +16,6 @@ String post_date = new SimpleDateFormat("MM-yyyy").format(post.getCreated());
 	<a href="<%= request.getContextPath() %>/?category=blog&page=update&id=${post.getId()}"><i class="fa fa-pencil" aria-hidden="true"></i></a> 
 </small>
  <div class="row">
-   <!-- Post Content Column -->
    <div class="col-lg-8">
     <img class="img-fluid rounded" src="http://placehold.it/900x40" alt="">
 	

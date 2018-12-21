@@ -439,8 +439,7 @@ $(function(){
         displayUpload();
     	$('.remove-upload').click(function(){
         	var i=$(this).data('index');
-        	alert('remove..'+i);
-        	
+                	
     		toUploadFiles.splice(i,1);
     		prepareUpload();
         });

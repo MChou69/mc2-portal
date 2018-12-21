@@ -1,7 +1,5 @@
 package mc.com.tests;
 
-import static org.junit.Assert.assertNotNull;
-
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -15,20 +13,20 @@ import mc.com.tools.HibernateUtil;
 public class HibernateCfgJUnit {
 	public final static Logger logger = Logger.getLogger(HibernateCrudTests.class);
 
-	@Test
-	public void Test1Connection() {
-		logger.info("******************************************************");
-		logger.info("************* JUnit Test : Connection ****************");
-		logger.info("******************************************************");
-		SessionFactory sessionFactory= HibernateUtil.getSessionFactory();	
-		assertNotNull(sessionFactory);
-		logger.info("Session Factory : "+sessionFactory);
-		if(sessionFactory!=null) {
-			Session session = sessionFactory.openSession();
-			assertNotNull(session);		
-			logger.info("Session Hibernate : "+session);
-		}
-	}
+//	@Test
+//	public void Test1Connection() {
+//		logger.info("******************************************************");
+//		logger.info("************* JUnit Test : Connection ****************");
+//		logger.info("******************************************************");
+//		SessionFactory sessionFactory= HibernateUtil.getSessionFactory();	
+//		assertNotNull(sessionFactory);
+//		logger.info("Session Factory : "+sessionFactory);
+//		if(sessionFactory!=null) {
+//			Session session = sessionFactory.openSession();
+//			assertNotNull(session);		
+//			logger.info("Session Hibernate : "+session);
+//		}
+//	}
 
 	@Test
 	public void Test2Session() {
@@ -36,7 +34,28 @@ public class HibernateCfgJUnit {
 		logger.info("***************** JUnit Test : CRUD ******************");
 		logger.info("******************************************************");
 
-
+		try {
+			SessionFactory sessionFactory= HibernateUtil.getSessionFactory();
+			logger.info("SessionFactory : "+ sessionFactory);
+//			Session session = HibernateUtil.getSession();		
+//			logger.info("Session : "+ session);
+//			logger.info("session.isConnected() : "+session.isConnected());
+		} catch (Exception e) {
+			logger.info("Exception : "+ e.getMessage());
+		}
+		
+		//		Todo todo = new Todo("hibernate test!",2);
+		//		
+		//		Transaction tx = session.getTransaction();
+		//		tx.begin();
+		//		Serializable id = session.save(todo);
+		//		tx.commit();
+		//		
+		//		session.close();
+		//		logger.info("todo : "+id+" ==> "+todo);
+		
+		logger.info("******************************************************");
+		
 		//		SessionFactory sessionFactory= HibernateUtil.getSessionFactory();	
 		//		Session session = sessionFactory.openSession();	
 		//		
@@ -110,6 +129,20 @@ public class HibernateCfgJUnit {
 			logger.info(user);
 		}
 		 */
-		logger.info("******************************************************");
+	}
+	@Test
+	public void Test3Session() {
+//		logger.info("******************************************************");
+//		Session session = HibernateUtil.getSession();
+//		Todo todo2 = new Todo("hibernate test2!",1);
+//		
+//		Transaction tx = session.getTransaction();
+//		tx.begin();
+//		Serializable id = session.save(todo2);
+//		tx.commit();
+//		session.close();
+//		logger.info("todo 2 : "+id+" ==> "+todo2);
+		
+//		logger.info("******************************************************");
 	}
 }

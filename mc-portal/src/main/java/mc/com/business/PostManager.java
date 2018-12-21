@@ -39,7 +39,7 @@ public class PostManager extends GenericDao<Post>{
 			for (String name : tags) {
 				Tag tag=tm.getByName(name);
 
-				if(tag==null) 
+				if(tag==null && !name.equals("")) 
 					tag = tm.add(new Tag(0, name));	
 
 				ptm.add(new PostTag(0, post, tag));

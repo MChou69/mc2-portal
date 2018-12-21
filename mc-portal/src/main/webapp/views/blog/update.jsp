@@ -1,17 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<link rel="stylesheet" type="text/css" href="<c:url value='/static/tags.css' />" />
+<%-- <link rel="stylesheet" type="text/css" href="<c:url value='/static/tags.css' />" />
 
 <link rel="stylesheet" href="<c:url value='/static/alertifyjs/css/alertify.min.css' />" />
-<link rel="stylesheet" href="<c:url value='/static/alertifyjs/css/themes/default.min.css' />" />
+<link rel="stylesheet" href="<c:url value='/static/alertifyjs/css/themes/default.min.css' />" /> --%>
 
 <!-- include the script -->
-<script src="<c:url value='/static/alertifyjs/alertify.min.js' />"></script>
+<%-- <script src="<c:url value='/static/alertifyjs/alertify.min.js' />"></script>
 
 <script>	
 
-</script>
+</script> --%>
+
+<link rel="stylesheet" type="text/css" href="<c:url value='/static/tags.css' />" />
+<link rel="stylesheet" href="<c:url value='/static/alertifyjs/css/alertify.min.css' />" />
+<link rel="stylesheet" href="<c:url value='/static/alertifyjs/css/themes/default.min.css' />" />
+
 <div class="card" style="margin-bottom: 20px;">
 	<div class="render_content" style="display: block; padding: 10px;">
 		<form  onsubmit="return false;" method="post" action="./main">
@@ -41,14 +46,21 @@
 						<div class="form-group">
 							<label class="col-md-2 control-label" for="Desc">Desc</label>
 							<div class="col-md-10">
-								<textarea rows="2" class="form-control" id="desc" name="desc">"${post.getDescription()}"</textarea>
+								<textarea rows="2" class="form-control" id="desc" name="desc">${post.getDescription()}</textarea>
 								<span class="text-danger field-validation-valid" data-valmsg-for="Desc" data-valmsg-replace="true"></span>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-md-2 control-label">Tags</label>
 							<div class="col-xs-8 col-md-6">
-								<input type="text" id="tags" name="tags" class="form-control" value="Java" data-role="tagsinput" />
+										
+								<!-- <div class="bootstrap-tagsinput"> --> 														
+									<c:forEach items="${post.getPostTags()}" var="pt">
+										<%-- <span class="tag label label-info">${pt.getTag().getName()}<span data-role="remove"></span></span> --%>
+										<input type="text" name="tags" class="form-control" value="${pt.getTag().getName()}" data-role="tagsinput" />
+										<%-- <a href="<%= request.getContextPath() %>/?category=blog&page=post&id=${post.getId()}" class="tag label label-info"> ${pt.getTag().getName()}</a> --%>
+									</c:forEach>
+								<!-- <input type="text" placeholder=""></div> -->
 							</div>
 						</div>
 					</div>
@@ -63,8 +75,22 @@
 			
 			<span class="clearfix"></span>
 			<div class="form-group">
+				<div class="row" style="margin-top: 20px !important;">
+					<textarea id="editor1" name="editor1" rows="12" cols="80">						
+						<c:import url="template.jsp" />					
+					</textarea>
+				</div>
+			</div>
+			<hr>
+			<div class="form-group">
+				<input type="button" name="create-post" id="btn_submit_post" value="Save!" class="btn btn-success" disabled="disabled">
+			</div>
+			<hr>
+			<div class="form-group">			
+				<div id="content" class="well"></div>
+			</div>
+<%-- 			<div class="form-group">
 				<div class="col-md-12" style="margin-top: 20px !important;">
-					<!-- textarea name="editor" id="editor" > </textarea-->
 					<textarea id="editor1" name="editor1" rows="12" cols="80">						
 						<c:import url="${post_url}" />					
 					</textarea>
@@ -77,13 +103,34 @@
 					<hr>
 					<div id="content" class="well"></div>
 				</div>
-			</div>
+			</div> --%>
 		</form>
 	</div>
 </div>
 
 
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="<c:url value='/static/jquery/jquery-3.3.1.min.js' />"></script>
+<script src="<c:url value='/static/alertifyjs/alertify.min.js' />"></script>
+<script src="https://cdn.ckeditor.com/4.10.1/full-all/ckeditor.js"></script>
+<script>
+	editor = CKEDITOR.replace('editor1'); 
+	editor.addCommand("EditorSave", { 
+	    exec: function(edt) {
+	    	if($('#title').val()!=''){
+		        $('#content').html(edt.document.getBody().getHtml());
+		        $('#btn_submit_post').removeAttr("disabled");
+	    	}else{
+	    		alert('title!');
+	    	}
+	    }
+	});
+	editor.ui.addButton('SaveButton', { 
+	    label: "Save",
+	    command: 'EditorSave',
+	    toolbar: 'insert',
+	    icon: 'Save'
+	});
+</script>
 <script>
 	$(function() {
 		$('#btn_submit_post').click(function(e) {
@@ -91,7 +138,9 @@
 			$.ajax({
 				  type: "POST",
 				  url: "./main",
-				  data: {				  
+				  data: {		
+					  item: 'post',
+					  action: 'update',				  
 					  category: $('#category').val(),
 					  title: $('#title').val(),
 					  desc: $('#desc').val(),
@@ -100,12 +149,10 @@
 					  id: $('#postId').html()		
 				  },
 				  success: function(data){
-						console.log('update post : '+data.message);
 						alertify.success(data.message);
-						document.location.href="./?category=blog&page=list1";
+						document.location.href="./?category=blog&page=list";
 				  },
 				  error: function(err){
-					  console.log('update post - error : '+err);
 					  alertify.error(err);
 				  }
 			});			
