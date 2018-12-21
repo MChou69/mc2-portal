@@ -1,0 +1,266 @@
+.note {
+	height: auto;
+	padding: 10px;
+	width: 100px;
+	position: absolute;
+	overflow: visible;
+	cursor: move;
+	font-size: 10px;
+	-webkit-box-shadow: 4px 4px 21px 4px rgba(143, 143, 135, 1);
+	-moz-box-shadow: 4px 4px 21px 4px rgba(143, 143, 135, 1);
+	box-shadow: 4px 4px 21px 4px rgba(143, 143, 135, 1);
+
+}
+
+#previewNote {
+	height: 200px;
+	width: 150px;
+}
+
+#fancy_ajax .note {
+	cursor: default;
+}
+
+.yellow {
+	background-color: #FDFB8C;
+	border: 1px solid #DEDC65;
+}
+
+.blue {
+	background-color: #A6E3FC;
+	border: 1px solid #75C5E7;
+}
+
+.green {
+	background-color: #A5F88B;
+	border: 1px solid #98E775;
+}
+
+.red {
+	background-color: #B6060E;
+	border: 1px solid #FE0700;
+	color: white;
+}
+
+span.data {
+	display: none;
+}
+
+a.green-button, a.green-button:visited {
+	color: black;
+	display: block;
+	font-size: 10px;
+	font-weight: bold;
+	height: 15px;
+	padding: 6px 5px 4px;
+	text-align: center;
+	width: 60px;
+	text-shadow: 1px 1px 1px #DDDDDD;
+	background: #37E5E3;
+	/*background:url(img/button_green.png) no-repeat left top;*/
+}
+
+a.green-button:hover {
+	text-decoration: none;
+	background-position: left bottom;
+}
+
+/*.author{
+	bottom:10px;
+	color:#666666;
+	font-family:Arial,Verdana,sans-serif;
+	font-size:12px;
+	position:absolute;
+	right:10px;
+}*/
+#main {
+	margin: 20px auto;
+	position: relative;
+	width: 100%;
+    background: #444;
+	height: 500px;
+	z-index: 10;
+	padding: 5px;
+	border-radius: 4px;
+}
+#main hr{
+	border-color:white;	
+}
+h3.popupTitle {
+	border-bottom: 1px solid #DDDDDD;
+	color: #666666;
+	font-size: 24px;
+	font-weight: normal;
+	padding: 0 0 5px;
+}
+
+#noteData {
+	height: auto;
+	margin: 30px 0 0 20px;
+}
+
+.note-form label {
+	display: block;
+	font-size: 10px;
+	font-weight: bold;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	padding-bottom: 3px;
+}
+
+.note-form textarea, .note-form input[type=text] {
+	background-color: #FCFCFC;
+	border: 1px solid #AAAAAA;
+	font-family: Arial, Verdana, sans-serif;
+	font-size: 12px;
+	height: 30px;
+	padding: 5px;
+	/* width:150px; */
+	margin-bottom: 10px;
+}
+
+.note-form input[type=text] {
+	height: auto;
+}
+
+.color {
+	/* The color swatches in the form: */
+	cursor: pointer;
+	float: left;
+	height: 10px;
+	margin: 0 5px 0 0;
+	width: 10px;
+}
+
+#note-submit {
+	margin: 20px 0px;
+}
+
+.btn-primary {
+	color: #fff;
+	background-color: #0275d8;
+	border-color: #0275d8;
+}
+
+.btn {
+	display: inline-block;
+	font-weight: 400;
+	line-height: 0.85;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: middle;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	border: 1px solid transparent;
+	padding: .3rem 0.8rem;
+	font-size: 0.8rem;
+	border-radius: .25rem;
+	-webkit-transition: all .2s ease-in-out;
+	-o-transition: all .2s ease-in-out;
+	transition: all .2s ease-in-out;
+	margin: 5px;
+}
+
+a.btn, .btn a {
+	text-decoration: none;
+	font-size: 90%;
+	color: white;
+}
+
+.form-control {
+	display: block;
+	width: 100%;
+	padding: .375rem .75rem;
+	font-size: 1rem;
+	line-height: 1.5;
+	color: #495057;
+	background-color: #fff;
+	background-clip: padding-box;
+	border: 1px solid #ced4da;
+	border-radius: .25rem;
+	transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+textarea {
+	overflow: auto;
+	resize: vertical;
+}
+
+input[type="date"] {
+	width: 75% !important;
+}
+
+#note-body {
+	min-height: 80px;
+}
+
+.label-danger {
+	background-color: #d9534f;
+}
+
+.label {
+	display: inline;
+	padding: .2em .6em .3em;
+	font-size: 75%;
+	font-weight: 700;
+	line-height: 1;
+	color: #fff;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: baseline;
+	border-radius: .25em;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	cursor: pointer;
+	padding: 5px;
+}
+/* The styles below are only necessary for the demo page */
+
+/*h1{
+	background:#f0f0f0;
+	border-bottom:1px solid #eaeaea;
+	font-size:1.5em;
+	font-weight:normal;
+	margin-bottom:15px;
+	padding:15px;
+	text-align:center;
+}
+
+h2 {
+	font-size:0.9em;
+	font-weight:normal;
+	padding-right:40px;
+	position:relative;
+	right:0;
+	text-align:right;
+	text-transform:uppercase;
+	top:-48px;
+}
+
+a, a:visited {
+	color:#0196e3;
+	text-decoration:none;
+	outline:none;
+}
+
+a:hover{
+	text-decoration:underline;
+}
+*/
+/*p.tutInfo{
+	padding:10px 0;
+	text-align:center;
+	position:fixed;
+	bottom:0px;
+	background:#f0f0f0;
+	border-top:1px solid #eaeaea;
+	width:100%;
+	z-index:15;
+}*/
+
+/*h1,h2,p.tutInfo{
+	font-family:"Myriad Pro",Arial,Helvetica,sans-serif;
+}*/
